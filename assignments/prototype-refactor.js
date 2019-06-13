@@ -8,38 +8,51 @@ Prototype Refactor
 */ 
   
 class GameObject {
-    construtor(gameProperties) {
-      this.createdAt = gameProperties.createdAt;
-      this.dimensions = gameProperties.dimensions;
-    }
+    construtor(attributes) {
+      this.createdAt = attributes.createdAt;
+      this.name = attributes.name;
+      this.dimensions = attributes.dimensions;
+    };
+
     destroy() {
       return `${this.name} was removed from the game`;
-    }
-  }
+    };
+  };
 
  class CharacterStats extends GameObject {
-    constructor(characterProperties) {
-      super(characterProperties);
-      this.healthPoints = characterProperties.healthPoints;
-      this.name = characterProperties.name;
-    }
+    constructor(moreAttributes) {
+      super(moreAttributes);
+      this.healthPoints = moreAttributes.healthPoints;
+      this.name = moreAttributes.name;
+    };
   
      takeDamage() {
-      return `${this.name} took damage`;
-    }
-  }
+        return `Ouch, ${this.name}! That must sting! (${this.name} took damage.)`;
+    };
+  };
 
  class Humanoid extends CharacterStats {
-    constructor(humanoidProperties) {
-      super(humanoidProperties);
-      this.team = humanoidProperties.team;
-      this.weapons = humanoidProperties.weapons;
-      this.language = humanoidProperties.language;
-    }
+    constructor(humanoidAttributes) {
+      super(humanoidAttributes);
+      this.team = humanoidAttributes.team;
+      this.weapons = humanoidAttributes.weapons;
+      this.language = humanoidAttributes.language;
+    };
     greet() {
       return `${this.name} offers a greeting in ${this.language}`;
-    }
-}
+    };
+};
+
+class Villain extends Humanoid {
+    constructor(evilAttributes) {
+        super(evilAttributes);
+        this.evilGlare = evilAttributes.evilGlare;
+        this.opponentHealth = evilAttributes.opponentHealth;
+    };
+    sideEye() {
+        return `The side-eye of ${this.name} will have you cowering in no time, puny plumber!`;
+    };
+};
 
   const mage = new Humanoid({
     createdAt: new Date(),
@@ -90,6 +103,24 @@ class GameObject {
     ],
     language: 'Elvish',
   });
+
+  const MIL = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 14,
+      height: 1,
+    },
+    healthPoints: 8,
+    name: 'The Matriarch',
+    team: 'The depths',
+    weapons: [
+      'sarcasm',
+      'salt on everything'
+    ],
+    language: 'Common Tongue',
+    evilGlare: 'Shooting daggers'
+  });
   
   console.log(mage.createdAt); // Today's date
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
@@ -101,3 +132,4 @@ class GameObject {
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+  console.log(MIL.sideEye());
